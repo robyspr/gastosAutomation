@@ -8,6 +8,8 @@ from googleapiclient.errors import HttpError
 
 from dotenv import dotenv_values
 
+from coinprices import getCoinsData
+
 config = dotenv_values()
 
 # If modifying these scopes, delete the file token.json.
@@ -16,14 +18,7 @@ SCOPES = [config.get('SCOPE1')]
 SAMPLE_SPREADSHEET_ID = config.get('SAMPLE_SPREADSHEET_ID')
 SAMPLE_RANGE_NAME = config.get('SAMPLE_RANGE_NAME')
 
-print(SCOPES)
-print(SAMPLE_RANGE_NAME)
-print(SAMPLE_SPREADSHEET_ID)
-
 def main():
-  """Shows basic usage of the Sheets API.
-  Prints values from a sample spreadsheet.
-  """
   creds = None
   # The file token.json stores the user's access and refresh tokens, and is
   # created automatically when the authorization flow completes for the first
@@ -48,30 +43,15 @@ def main():
 
     # Call the Sheets API
     sheet = service.spreadsheets()
-    result = (
-        sheet.values()
-        .get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME)
-        .execute()
-    )
-    values = [["A"], ["B"]]
+    # values = [["A"], ["B"]]
+    values = getCoinsData()
     body = {"values": values}
     result_update = (
       sheet.values()
       .update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME,valueInputOption="RAW",body=body)
       .execute()
     )
-    print(f"{result_update.get('updatedCells')} cells updated.")
 
-    values = result.get("values", [])
-
-    if not values:
-      print("No data found.")
-      return
-
-    for row in values:
-      # Print columns A and E, which correspond to indices 0 and 4.
-      # print(f"{row[0]}, {row[4]}")
-      print(f"{row[0]}")
   except HttpError as err:
     print(err)
 
