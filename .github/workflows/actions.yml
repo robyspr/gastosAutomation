@@ -3,15 +3,12 @@ name: run main.py
 
 on:
   schedule:
-    - cron: '0 0 * * 1' # At 00:00 on Monday
+    - cron: '0 0-23/8 * * 1-5' # At minute 0 past every 8th hour from 0 through 23 on every day-of-week from Monday through Friday
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
-      - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content to github runner
 
       - name: setup python
         uses: actions/setup-python@v4
@@ -25,5 +22,10 @@ jobs:
           
       - name: execute py script # run main.py
         env:
-          SOME_SECRET: ${{ secrets.SOME_SECRET }}
+          SCOPE1 : ${{ vars.SCOPE1}}
+          SAMPLE_SPREADSHEET_ID : ${{ secrets.SAMPLE_SPREADSHEET_ID}}
+          SAMPLE_RANGE_NAME : ${{ vars.SAMPLE_RANGE_NAME}}
+          X_CG_DEMO_API_KEY : ${{ secrets.X_CG_DEMO_API_KEY}}
+          JSON_TOKEN : ${{ secrets.JSON_TOKEN}}
+          JSON_CREDENTIALS : ${{ secrets.JSON_CREDENTIALS}}
         run: python main.py

@@ -1,8 +1,5 @@
+import os
 import requests
-
-from dotenv import dotenv_values
-
-config = dotenv_values()
 
 def getData(item):
     # return item['id'], item['current_price']
@@ -14,7 +11,7 @@ def getCoinsData():
 
   payload = {}
   headers = {
-    'x_cg_demo_api_key': config.get('X_CG_DEMO_API_KEY')
+    'x_cg_demo_api_key': os.environ['X_CG_DEMO_API_KEY']
   }
 
   response = requests.request("GET", url, headers=headers, data=payload)
