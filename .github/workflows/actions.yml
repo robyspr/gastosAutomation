@@ -4,9 +4,8 @@ name: run main.py
 on:
   schedule:
     - cron: '0 0-23/8 * * 1-5' # At minute 0 past every 8th hour from 0 through 23 on every day-of-week from Monday through Friday
-  pull_request:
-    branches:
-        - main
+  workflow_dispatch:
+  
 jobs:
   build:
     runs-on: ubuntu-latest
