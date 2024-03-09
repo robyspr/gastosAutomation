@@ -4,16 +4,17 @@ name: run main.py
 on:
   schedule:
     - cron: '0 0-23/8 * * 1-5' # At minute 0 past every 8th hour from 0 through 23 on every day-of-week from Monday through Friday
-  pull_request:
-    branches:
-        - main
+  workflow_dispatch:
+  
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        
       - name: setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5.0.0
         with:
           python-version: '3.10' # install the python version needed
           
